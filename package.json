@@ -6,8 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "nodemon src/app.js",
-    "build": " npm install && node build.js",
-    "start:dev":"node dist/bundle.mjs"
+    "build": " npm install && node src/app.js"
   },
   "keywords": [],
   "author": "",
