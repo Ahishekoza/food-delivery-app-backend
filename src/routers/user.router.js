@@ -3,9 +3,9 @@ import { getCurrentUser, registerUser, updateUser } from '../controllers/user.co
 import { jwtCheck, jwtParse } from '../middlewares/auth.js';
 const userRouter = express.Router();
 // POST
-userRouter.post('/registerUser',jwtCheck ,registerUser)
+userRouter.post('/',jwtCheck ,registerUser)
 // PUT
-userRouter.put('/updateUser',jwtCheck ,jwtParse,updateUser)
+userRouter.put('/',jwtCheck ,jwtParse,updateUser)
 // GET
-userRouter.get('/getCurrentUser',jwtCheck,jwtParse,getCurrentUser)
+userRouter.get('/',jwtCheck,jwtParse,getCurrentUser)
 export {userRouter}

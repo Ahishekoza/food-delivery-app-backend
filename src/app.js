@@ -4,6 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv'
 import  connectDB  from './db/index.js';
 import { userRouter } from './routers/user.router.js';
+import { restaurantRouter } from './routers/restaurant.router.js';
 
 dotenv.config()
 
@@ -26,3 +27,4 @@ app.use('/health',(req,res)=>{
 
 // --Routes
 app.use('/api/v1/users', userRouter)
+app.use('/api/v1/restaurant',restaurantRouter)
