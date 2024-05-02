@@ -28,31 +28,30 @@ export const createRestaurant = async (req, res) => {
   // check if the restaurant is already present
   // if yes then throw an error
   // if not  then create a new restaurant
- 
+
+  if (req?.userId) {
     const existingRestaurant = await Restaurant.findOne({ user: req.userId });
 
     if (existingRestaurant) {
       throw new ApiError(409, "User has already added a restaurant");
     }
-    // Upload Image on Cloudinary
-    // const imageLocalPath = req.file?.path;
-    // if (!imageLocalPath) {
-    //   throw new ApiError(404, "Image path not found");
-    // }
+  }
+  // Upload Image on Cloudinary
+  // const imageLocalPath = req.file?.path;
+  // if (!imageLocalPath) {
+  //   throw new ApiError(404, "Image path not found");
+  // }
 
-    // const restaurantImage = await uploadOnCloudinary(imageLocalPath);
+  // const restaurantImage = await uploadOnCloudinary(imageLocalPath);
 
-    // Create a new restaurant
-    const restaurant = new Restaurant({ ...req.body, user: req.userId });
+  // Create a new restaurant
+  const restaurant = new Restaurant({ ...req.body, user: req.userId });
 
-    // restaurant.imageUrl = restaurantImage?.url;
+  // restaurant.imageUrl = restaurantImage?.url;
 
-    await restaurant.save();
+  await restaurant.save();
 
-    res.json(
-      new ApiResponse(201, restaurant, "Restaurant created successfully")
-    );
-  
+  res.json(new ApiResponse(201, restaurant, "Restaurant created successfully"));
 };
 
 export const updateRestaurant = async (req, res) => {
@@ -94,7 +93,7 @@ export const updateRestaurant = async (req, res) => {
     //    newRestaurantImage = await uploadOnCloudinary(imageLocalPath);
     // }
 
-   const restaurantUpdated = await Restaurant.findOneAndUpdate(
+    const restaurantUpdated = await Restaurant.findOneAndUpdate(
       { user: req.userId },
       {
         $set: {
@@ -108,16 +107,23 @@ export const updateRestaurant = async (req, res) => {
         },
       },
       {
-        $new:true
+        $new: true,
       }
     );
 
-    if(!restaurantUpdated){
-        throw new ApiError(401,'Fail to update restaurant')
+    if (!restaurantUpdated) {
+      throw new ApiError(401, "Fail to update restaurant");
     }
 
-    res.status(200).json(new ApiResponse(200,restaurantUpdated,'Restaurant updated successfully'))
-
+    res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          restaurantUpdated,
+          "Restaurant updated successfully"
+        )
+      );
   } catch (error) {
     throw new ApiError(404, "Error updating restaurant");
   }
