@@ -23,7 +23,6 @@ export const jwtParse =async(req, res , next)=>{
     const token = req.headers.authorization.split(" ")[1]
   const decodeToken =  jwt.decode(token)
 
-  console.log(decodeToken);
   const auth0Id = decodeToken?.sub
 
 

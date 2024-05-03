@@ -5,6 +5,6 @@ import { createRestaurant, getMyRestaurant, updateRestaurant } from '../controll
 const restaurantRouter = express.Router();
 
 restaurantRouter.get('/',jwtParse,jwtParse,getMyRestaurant)
-restaurantRouter.post('/',jwtParse,jwtCheck,createRestaurant)
+restaurantRouter.post('/',createRestaurant)
 restaurantRouter.put('/',jwtParse,jwtCheck,updateRestaurant)
 export {restaurantRouter}

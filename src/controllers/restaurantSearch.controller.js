@@ -1,4 +1,27 @@
+import { ApiError } from "../ApiError.js";
+import { ApiResponse } from "../ApiResponse.js";
 import { Restaurant } from "../models/restaurantOwner.model.js";
+
+export const getRestaurant = async(req, res) => {
+  // get the restaurant params from the request
+  // check in the database wether the restaurant is available
+  //  if yes then send the response
+  // else send the error
+
+  try {
+    const { restaurantId } = req.params;
+
+    await Restaurant.findById({ _id: restaurantId})
+    .then((response)=>{
+      res.status(200).json(new ApiResponse(200, response,"Restaurant Found Successfully"))
+    })
+    .catch((error)=>{
+      res.status(error.code).json(new ApiError(error.code, error.message))
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const searchRestaurants = async (req, res) => {
   // receieve the parameters of the city
@@ -53,27 +76,25 @@ export const searchRestaurants = async (req, res) => {
       ];
     }
 
+    console.log(query);
 
-    const restaurants = await Restaurant.aggregate(
-      [
-        {
-          $match: query,
-        },
-        {
-          $sort: { [sortOption]: 1 },
-        },
-        {
-          $skip: skip,
-        },
-        {
-          $limit: pageSize,
-        }
-      ]
-    );
+    const restaurants = await Restaurant.aggregate([
+      {
+        $match: query,
+      },
+      {
+        $sort: { [sortOption]: 1 },
+      },
+      {
+        $skip: skip,
+      },
+      {
+        $limit: pageSize,
+      },
+    ]);
 
     const total = await Restaurant.countDocuments(query);
-    console.log(total);
-    
+
     return res.status(200).json({
       data: restaurants,
       pagination: {
